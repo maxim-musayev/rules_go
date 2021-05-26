@@ -234,20 +234,14 @@ def go_rules_dependencies(is_rules_go = False):
     # Doesn't belong here, but it would be an annoying source of errors if
     # this weren't generated with -proto disable_global.
     _maybe(
-        http_archive,
+        git_repository,
         name = "org_golang_google_genproto",
-        # master, as of 2021-03-05
-        urls = [
-            "https://mirror.bazel.build/github.com/googleapis/go-genproto/archive/9728d6b83eeb3850506175f3b213d2037ce1f89d.zip",
-            "https://github.com/googleapis/go-genproto/archive/9728d6b83eeb3850506175f3b213d2037ce1f89d.zip",
-        ],
-        sha256 = "faff880420132f1f1e32d7865d0361bd4876683afa031dae113fd4bb94ba0d2d",
-        strip_prefix = "go-genproto-9728d6b83eeb3850506175f3b213d2037ce1f89d",
-        patches = [
-            # gazelle args: -repo_root . -go_prefix google.golang.org/genproto -go_naming_convention import_alias -proto disable_global
-            "@io_bazel_rules_go//third_party:org_golang_google_genproto-gazelle.patch",
-        ],
+        remote = "https://github.com/google/go-genproto",
+        commit = "4f5b463f9597cbe0dd13a6a2cd4f85e788d27508",  # master, as of 2019-03-03
+        patches = ["@io_bazel_rules_go//third_party:org_golang_google_genproto-gazelle.patch"],
         patch_args = ["-p1"],
+        shallow_since = "1551303189 -0700",
+        # gazelle args: -go_prefix google.golang.org/genproto -proto disable_global
     )
 
     # go_proto_library targets for gRPC and Google APIs.
